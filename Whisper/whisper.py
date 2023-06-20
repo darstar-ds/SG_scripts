@@ -1,7 +1,10 @@
 # Note: you need to be using OpenAI Python v0.27.0 for the code below to work
 import openai
+import os
 
-openai.api_key = "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"
+API_OPENAI_KEY = os.environ.get("API_DS_OPENAI")
+
+openai.api_key = API_OPENAI_KEY
 
 audio_file = open("./Whisper/_audio_file/DS_derush_po15.mp3", "rb")
 transcript = openai.Audio.transcribe("whisper-1", audio_file, response_format="srt", language="pl")
