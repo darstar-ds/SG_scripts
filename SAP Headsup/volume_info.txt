@@ -1,0 +1,21 @@
+
+
+Language	 Step	 Activity	 Total Volume Forecast	 
+esCO	 DTP and create PDF	 DTP	 10 Pages	 
+esCO	 Make changes	 Make changes	 10 Pages	 
+enGB	 DTP and create PDF	 DTP	 10 Pages	 
+enGB	 Make changes	 Make changes	 10 Pages	 
+deDE	 DTP and create PDF	 DTP	 10 Pages	 
+deDE	 Make changes	 Make changes	 10 Pages	 
+esES	 DTP and create PDF	 DTP	 10 Pages	 
+esES	 Make changes	 Make changes	 10 Pages	 
+frFR	 DTP and create PDF	 DTP	 10 Pages	 
+frFR	 Make changes	 Make changes	 10 Pages	 
+itIT	 DTP and create PDF	 DTP	 10 Pages	 
+itIT	 Make changes	 Make changes	 10 Pages	 
+nlNL	 DTP and create PDF	 DTP	 10 Pages	 
+nlNL	 Make changes	 Make changes	 10 Pages	 
+ptBR	 DTP and create PDF	 DTP	 10 Pages	 
+ptBR	 Make changes	 Make changes	 10 Pages	 
+
+
