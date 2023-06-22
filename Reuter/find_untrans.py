@@ -16,7 +16,8 @@ XLS_COLUMNS = {
     17: "Abmessungen",
     18: "Leistung-Leuchtmittel"
     }
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-16\\"
+
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-13\\"
 EXPORTS4TRANS = CURR_PATH + "exports4trans\\"
 EXPORTED_COLUMNS = CURR_PATH + "4trans_sheets\\"
 TRANSCOLUMNS = list(XLS_COLUMNS.keys())
@@ -31,13 +32,12 @@ def find_untrans(files4trans_path, columns):
     '''
     dir_list = os.listdir(files4trans_path) 
     if os.path.exists(files4trans_path):
-        print("Folder exist.")
+        print(f"Folder {files4trans_path} exist.")
     else:
-        print("Folder does not exist.")
-
+        print(f"Folder {files4trans_path} does not exist.")
     print(f"dir_list= {dir_list}")
-    # get all translated files and build trans memmory as dataframe
-    for file in dir_list:
+    
+    for file in dir_list: # get all untranslated entries and build separate workbook
         file4trans_path = files4trans_path + file
         wb = openpyxl.load_workbook(file4trans_path)
         
@@ -47,6 +47,13 @@ def find_untrans(files4trans_path, columns):
             print(f"Number of rows: {row_limit}")
             print(f"Current sheet: {ws}")
             print(f"Current tab: {tab}")
+
+            # verify the names/number of columns in the spreadsheet
+            list_with_values=[]
+            for cell in ws[1]:
+                list_with_values.append(cell.value)
+            print(f"Columns in {tab} tab: {list_with_values}")
+            print(f"Columns no in {tab} tab: {len(list_with_values)}")
     
             for column in columns:
                 strings4trans = pd.DataFrame(columns=["DE", "PL"])
@@ -61,8 +68,6 @@ def find_untrans(files4trans_path, columns):
                         new_row = pd.DataFrame({"DE": [deu_cell_1.value], 
                                                 "PL": [pol_cell_1.value]})
                         strings4trans = pd.concat([strings4trans, new_row], ignore_index=True)
-                        # print(f"curr_row= {curr_row}, deu_cell1_value= {deu_cell_1.value}")
-                        # print(f"curr_row+2= {curr_row+2}, pol_cell1_value= {pol_cell_1.value}")
                     else:
                         pass
 
@@ -70,23 +75,26 @@ def find_untrans(files4trans_path, columns):
                         new_row = pd.DataFrame({"DE": [deu_cell_2.value], 
                                                 "PL": [pol_cell_2.value]})
                         strings4trans = pd.concat([strings4trans, new_row], ignore_index=True)
-                        # print(f"curr_row+1= {curr_row+1}, deu_cell2_value= {deu_cell_2.value}")
-                        # print(f"curr_row+3= {curr_row+3}, pol_cell2_value= {pol_cell_2.value}")
                     else:
                         pass
 
                     curr_row += 4
-                # strings4trans = strings4trans[["DE", "PL"]] #select only DE and PL columns
-                print(strings4trans.head())
-                print(strings4trans.shape)
+                
+                print(f"Tab: {tab}, Column: {XLS_COLUMNS[column]}, initial dataframe head: {strings4trans.head()}")
+                print(f"Initial dataframe shape: {strings4trans.shape}")
+
+                # extract unique entries only
+                strings4trans_unique = strings4trans.drop_duplicates(keep="first")
+                print(f"Tab: {tab}, Column: {XLS_COLUMNS[column]}, unique dataframe head: {strings4trans_unique.head()}")
+                print(f"Unique dataframe shape: {strings4trans_unique.shape}")
 
                 # save the dataframe to excel
-                if strings4trans.shape[0] == 0:
+                if strings4trans_unique.shape[0] == 0:
                     pass
                 else:
-                    file_path = EXPORTED_COLUMNS + file[:-5] + "-" + tab + "-" + "COL" + "-" + str(XLS_COLUMNS[column]) + ".xlsx"
+                    file_path = EXPORTED_COLUMNS + file[:-5] + "-" + tab + "-" + "COL" + "-" + str(XLS_COLUMNS[column]) + "_unique.xlsx"
                     with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                        strings4trans.to_excel(writer, sheet_name=str(XLS_COLUMNS[column]), index=False)
+                        strings4trans_unique.to_excel(writer, sheet_name=str(XLS_COLUMNS[column]), index=False)
                 
 
 find_untrans(EXPORTS4TRANS, TRANSCOLUMNS)
