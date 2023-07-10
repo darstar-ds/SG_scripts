@@ -17,7 +17,7 @@ XLS_COLUMNS = {
     18: "Leistung-Leuchtmittel"
     }
 
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-13\\"
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-04\\"
 EXPORTS4TRANS = CURR_PATH + "exports4trans\\"
 EXPORTED_COLUMNS = CURR_PATH + "4trans_sheets\\"
 TRANSCOLUMNS = list(XLS_COLUMNS.keys())
@@ -41,7 +41,7 @@ def find_untrans(files4trans_path, columns):
         file4trans_path = files4trans_path + file
         wb = openpyxl.load_workbook(file4trans_path)
         
-        for tab in wb.sheetnames: #for each workseet in a workbook
+        for tab in wb.sheetnames: #for each worksheet in a workbook
             ws = wb[tab]
             row_limit = ws.max_row
             print(f"Number of rows: {row_limit}")

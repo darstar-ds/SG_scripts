@@ -1,12 +1,26 @@
-from msg_parser import MsOxMessage
+import pypyodbc 
+import pandas as pd
 
-msg_obj = MsOxMessage("./SAP Headsup/emails/MARKETING - 7031-1  Heads-up.msg")
-
-# is_message = msg_obj.is_valid_msg_file()
-# print(is_message)
-json_string = msg_obj.get_message_as_json()
-
-print(type(json_string))
-# print(json_string)
-
-msg_properties_dict = msg_obj.get_properties()
+cnxn = pypyodbc.connect(
+    "Driver={ODBC Driver 18 for SQL Server};"
+    "Server=boczek;"
+    "Database=sgdb;"
+    # "uid=login;pwd=pass"
+                        )
+df = pd.read_sql_query(
+    """
+    SELECT 
+    product as Project 
+    , id as SubProject
+    , falcon_phase as Step
+    , return_date as ReturnDate
+    , request_description as Volume
+    , SL.short_code as Source
+    , TL.language_tag as Target
+    , jp_environment as Environment 
+    from JobParts 
+    INNER JOIN Languages AS SL (nolock) ON (JobParts.jp_src_lang_id = SL.language_id) 
+    INNER JOIN Languages AS TL (nolock) ON (JobParts.jp_trg_lang_id = TL.language_id) 
+    where platform="SAP" and return_date > DATEADD(day, 7, GETDATE()) 
+    order by job_part_id desc
+    """, cnxn)

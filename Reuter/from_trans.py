@@ -2,9 +2,24 @@ import pandas as pd
 import os
 import openpyxl
 
+XLS_COLUMNS = {
+    6: "Kurzbeschreibung",
+    7: "Optionstext",
+    9: "Lieferumfang",
+    10: "Langbeschreibung",
+    11: "Ergaenzung-Bullets",
+    12: "Weitere-Anmerkungen",
+    13: "Achtung",
+    14: "Variante",
+    15: "Hinweis",
+    16: "Typ",
+    17: "Abmessungen",
+    18: "Leistung-Leuchtmittel"
+    }
 # XLS_COLUMNS = {
 #     6: "Kurzbeschreibung",
 #     7: "Optionstext",
+#     8: "",
 #     9: "Lieferumfang",
 #     10: "Langbeschreibung",
 #     11: "Ergaenzung-Bullets",
@@ -16,22 +31,7 @@ import openpyxl
 #     17: "Abmessungen",
 #     18: "Leistung-Leuchtmittel"
 #     }
-XLS_COLUMNS = {
-    6: "Kurzbeschreibung",
-    7: "Optionstext",
-    8: "",
-    9: "Lieferumfang",
-    10: "Langbeschreibung",
-    11: "Ergaenzung-Bullets",
-    #12: "Weitere-Anmerkungen",
-    # 13: "Achtung",
-    # 14: "Variante",
-    # 15: "Hinweis",
-    # 16: "Typ",
-    # 17: "Abmessungen",
-    # 18: "Leistung-Leuchtmittel"
-    }
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-13\\"
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-21\\"
 TRANSLATED_FILES_PATH = CURR_PATH + "translated\\"
 FILES4TRANS_PATH = CURR_PATH + "exports4trans\\"
 
@@ -44,9 +44,10 @@ def translated_gloss(translated_files_path):
     '''
     dir_list = os.listdir(translated_files_path) 
     if os.path.exists(translated_files_path):
-        print("Folder exist.")
+        print(f"Folder exist {translated_files_path}.")
     else:
-        print("Folder does not exist.")
+        print(f"Folder {translated_files_path} does not exist.")
+    print(f"dir_list= {dir_list}")
 
     translated_gloss = pd.DataFrame(columns=["DE", "PL"])
 
@@ -68,9 +69,9 @@ def translate_workbooks(workbooks_path, columns):
 
     dir_list = os.listdir(workbooks_path) 
     if os.path.exists(workbooks_path):
-        print(f"Folder exist {workbooks_path}.")
+        print(f"Folder exist '{workbooks_path}'.")
     else:
-        print(f"Folder {workbooks_path} does not exist.")
+        print(f"Folder '{workbooks_path}' does not exist.")
     print(f"dir_list= {dir_list}")
 
     for file in dir_list:
@@ -79,8 +80,7 @@ def translate_workbooks(workbooks_path, columns):
         for tab in wb.sheetnames: #for each worksheet in a workbook
             ws = wb[tab]
             row_limit = ws.max_row
-            print(f"Number of rows: {row_limit}")
-            print(f"Current tab: {tab}")
+            print(f"Current tab: {tab}, Number of rows: {row_limit}")
             
             for column in columns: #column is a number
                 curr_row = 2
