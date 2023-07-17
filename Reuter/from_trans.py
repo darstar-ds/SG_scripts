@@ -31,7 +31,7 @@ XLS_COLUMNS = {
 #     17: "Abmessungen",
 #     18: "Leistung-Leuchtmittel"
 #     }
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-06-21\\"
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-04\\"
 TRANSLATED_FILES_PATH = CURR_PATH + "translated\\"
 FILES4TRANS_PATH = CURR_PATH + "exports4trans\\"
 

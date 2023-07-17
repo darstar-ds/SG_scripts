@@ -17,7 +17,7 @@ XLS_COLUMNS = {
     18: "Leistung-Leuchtmittel"
     }
 
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-04\\"
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-17\\"
 EXPORTS4TRANS = CURR_PATH + "exports4trans\\"
 EXPORTED_COLUMNS = CURR_PATH + "4trans_sheets\\"
 TRANSCOLUMNS = list(XLS_COLUMNS.keys())
