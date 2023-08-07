@@ -198,7 +198,8 @@ print(df_jobparts_import['Step'].unique())
 
 
 # select rows with DTP tasks only and reset index
-df_DTP_headsups = df_jobparts_import.loc[df_jobparts_import['Step'].isin(['FOR_CREPDF', 'DTPCREAT', 'IMPLMT'])]
+df_DTP_headsups = df_jobparts_import.loc[df_jobparts_import['Step'].isin(['FOR_CREPDF', 'DTPCREAT'])]
+# , 'IMPLMT' - excluded as it doubles the number of pages/frames
 df_DTP_headsups.reset_index(inplace=True, drop=True)
 
 # replace null values wiith data from similar tasks
@@ -228,7 +229,7 @@ df_day_scope_trans = (df_day_scope.T).sort_index(ascending=True)
 print(df_day_scope_trans.head())
 df_day_scope_trans.to_csv(CURR_PATH + "workscope.csv")
 
-
+# display data in streamlit
 st.write("SAP marketing forecasts")
 st.bar_chart(df_day_scope_trans)
 st.dataframe(df_day_scope_trans)

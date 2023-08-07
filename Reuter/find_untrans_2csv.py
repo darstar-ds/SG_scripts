@@ -31,6 +31,7 @@ def find_untrans(files4trans_path, columns):
     Source cells that require translation
     will be exported
     '''
+    prev_time = datetime.datetime.now()
     dir_list = os.listdir(files4trans_path) 
     if os.path.exists(files4trans_path):
         print(f"Folder {files4trans_path} exist.")
@@ -56,6 +57,8 @@ def find_untrans(files4trans_path, columns):
     
             for transcolumn in columns:
                 strings4trans = pd.DataFrame(columns=["DE", "PL"])
+                csv_path = EXPORTED_COLUMNS + file[:-5] + "-" + tab + "-" + "COL" + "-" + str(XLS_COLUMNS[transcolumn]) + ".csv"
+                strings4trans.to_csv(csv_path, sep='\t', header=True, index=False)
                 curr_row = 2
                 while curr_row < row_limit:
                     # print(f"Sprache type: {str(ws.cell(row=curr_row, column=2))}")
@@ -90,51 +93,28 @@ def find_untrans(files4trans_path, columns):
                                         # print(f"Target_text type: {type(target_text)}, target_text: {target_text}")
                                         # print(row)                                    
                                         # new_row = {"DE": source_text, "PL": target_text}
-                                        data = {'DE': [source_text],
-                                                'PL': [target_text]}
+                                        data = {"DE": [source_text], "PL": [target_text]}
                                         # data=[source_text, target_text], columns=["DE", "PL"]
                                         new_row = pd.DataFrame(data)
                                         # strings4trans = strings4trans.append(new_row, ignore_index=True)
-                                        strings4trans = pd.concat([strings4trans, new_row], ignore_index=True)
+                                        new_row.to_csv(csv_path, mode="a", sep='\t', index=False, header=False)
                                         # print(strings4trans)
                                         is_target_found=True
                     else:
                         pass        
                     curr_row += 1
-                    if curr_row % 100 == 0:
-                        print(f"Column: {XLS_COLUMNS[transcolumn]}, Progress: {curr_row}/{row_limit}, Time: {datetime.datetime.now()}")
+                    if curr_row % 200 == 0:
+                        curr_time = datetime.datetime.now()
+                        time_delta = curr_time - prev_time
+                        print(f"Column: {XLS_COLUMNS[transcolumn]}, Progress: {curr_row}/{row_limit}, Time: {curr_time}, Delta: {time_delta}")
+                        prev_time = curr_time
                 
+                csv_path_df = pd.read_csv(csv_path, sep="\t")
+                strings4trans = pd.concat([strings4trans, csv_path_df], ignore_index=True)
                 print(f"Tab: {tab}, Column: {XLS_COLUMNS[transcolumn]}, initial dataframe head: {strings4trans.head()}")
                 print(f"Initial dataframe shape: {strings4trans.shape}")
 
-        # for column in columns:
-        #                 strings4trans = pd.DataFrame(columns=["DE", "PL"])
-        #                 curr_row = 2
-        #                 while curr_row < row_limit:
-        #                     deu_cell_1 = ws.cell(row=curr_row, column=column)
-        #                     deu_cell_2 = ws.cell(row=curr_row+1, column=column)
-        #                     pol_cell_1 = ws.cell(row=curr_row+2, column=column)
-        #                     pol_cell_2 = ws.cell(row=curr_row+3, column=column)
-                                                
-        #                     if deu_cell_1.value != None and pol_cell_1.value is None:
-        #                         new_row = pd.DataFrame({"DE": [deu_cell_1.value], 
-        #                                                 "PL": [pol_cell_1.value]})
-        #                         strings4trans = pd.concat([strings4trans, new_row], ignore_index=True)
-        #                     else:
-        #                         pass
-
-        #                     if deu_cell_2.value != None and pol_cell_2.value is None:
-        #                         new_row = pd.DataFrame({"DE": [deu_cell_2.value], 
-        #                                                 "PL": [pol_cell_2.value]})
-        #                         strings4trans = pd.concat([strings4trans, new_row], ignore_index=True)
-        #                     else:
-        #                         pass
-
-        #                     curr_row += 4
-                        
-        #                 print(f"Tab: {tab}, Column: {XLS_COLUMNS[column]}, initial dataframe head: {strings4trans.head()}")
-        #                 print(f"Initial dataframe shape: {strings4trans.shape}")
-
+        
                 # extract unique entries only
                 strings4trans_unique = strings4trans.drop_duplicates(keep="first")
                 print(f"Tab: {tab}, Column: {XLS_COLUMNS[transcolumn]}, unique dataframe head: {strings4trans_unique.head()}")

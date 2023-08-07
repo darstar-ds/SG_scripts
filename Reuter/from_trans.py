@@ -31,7 +31,7 @@ XLS_COLUMNS = {
 #     17: "Abmessungen",
 #     18: "Leistung-Leuchtmittel"
 #     }
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-04\\"
+CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-26\\"
 TRANSLATED_FILES_PATH = CURR_PATH + "translated\\"
 FILES4TRANS_PATH = CURR_PATH + "exports4trans\\"
 
@@ -42,12 +42,7 @@ def translated_gloss(translated_files_path):
     Empty dataframe "translated_gloss" is created and
     each file is added to the dataframe.
     '''
-    dir_list = os.listdir(translated_files_path) 
-    if os.path.exists(translated_files_path):
-        print(f"Folder exist {translated_files_path}.")
-    else:
-        print(f"Folder {translated_files_path} does not exist.")
-    print(f"dir_list= {dir_list}")
+    
 
     translated_gloss = pd.DataFrame(columns=["DE", "PL"])
 
@@ -69,10 +64,10 @@ def translate_workbooks(workbooks_path, columns):
 
     dir_list = os.listdir(workbooks_path) 
     if os.path.exists(workbooks_path):
-        print(f"Folder exist '{workbooks_path}'.")
+        print(f"Folder exists '{workbooks_path}'.")
     else:
         print(f"Folder '{workbooks_path}' does not exist.")
-    print(f"dir_list= {dir_list}")
+    # print(f"dir_list= {dir_list}")
 
     for file in dir_list:
         file4trans_path = workbooks_path + file
@@ -121,4 +116,10 @@ def translate_workbooks(workbooks_path, columns):
 
 transmem_dict = dict(translated_gloss(TRANSLATED_FILES_PATH).values)
 
-translate_workbooks(FILES4TRANS_PATH, XLS_COLUMNS)
+dir_list = os.listdir(FILES4TRANS_PATH) 
+if os.path.exists(FILES4TRANS_PATH):
+    print(f"Folder exists {FILES4TRANS_PATH}.")
+    translate_workbooks(FILES4TRANS_PATH, XLS_COLUMNS)
+    print(f"dir_list= {dir_list}")
+else:
+    print(f"Folder {FILES4TRANS_PATH} does not exist.")
