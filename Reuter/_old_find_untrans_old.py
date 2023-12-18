@@ -6,18 +6,20 @@ XLS_COLUMNS = {
     6: "Kurzbeschreibung",
     7: "Optionstext",
     9: "Lieferumfang",
-    10: "Langbeschreibung",
-    11: "Ergaenzung-Bullets",
-    12: "Weitere-Anmerkungen",
-    13: "Achtung",
-    14: "Variante",
-    15: "Hinweis",
-    16: "Typ",
-    17: "Abmessungen",
-    18: "Leistung-Leuchtmittel"
+    10: "Einleitung",
+    11: "Langbeschreibung",
+    12: "Ergaenzung-Bullets",
+    13: "Weitere-Anmerkungen",
+    14: "Weitere-Besonderheiten",
+    15: "Achtung",
+    16: "Variante",
+    17: "Hinweis",
+    18: "Typ",
+    19: "Abmessungen",
+    20: "Leistung-Leuchtmittel"
     }
 
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-26\\"
+CURR_PATH = "e:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-10-18\\"
 EXPORTS4TRANS = CURR_PATH + "exports4trans\\"
 EXPORTED_COLUMNS = CURR_PATH + "4trans_sheets\\"
 TRANSCOLUMNS = list(XLS_COLUMNS.keys())

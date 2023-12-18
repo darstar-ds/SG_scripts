@@ -7,18 +7,20 @@ XLS_COLUMNS = {
     6: "Kurzbeschreibung",
     7: "Optionstext",
     9: "Lieferumfang",
-    10: "Langbeschreibung",
-    11: "Ergaenzung-Bullets",
-    12: "Weitere-Anmerkungen",
-    13: "Achtung",
-    14: "Variante",
-    15: "Hinweis",
-    16: "Typ",
-    17: "Abmessungen",
-    18: "Leistung-Leuchtmittel"
+    10: "Einleitung",
+    11: "Langbeschreibung",
+    12: "Ergaenzung-Bullets",
+    13: "Weitere-Anmerkungen",
+    14: "Weitere-Besonderheiten",
+    15: "Achtung",
+    # 16: "Variante",
+    16: "Hinweis",
+    17: "Typ",
+    18: "Abmessungen",
+    # 20: "Leistung-Leuchtmittel"
     }
 
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-26\\"
+CURR_PATH = "e:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-12-01\\"
 EXPORTS4TRANS = CURR_PATH + "exports4trans\\"
 EXPORTED_COLUMNS = CURR_PATH + "4trans_sheets\\"
 TRANSCOLUMNS = list(XLS_COLUMNS.keys())
@@ -81,29 +83,16 @@ def extract_strings(worksheet, column_no, row_limit):
 def select_untranslated(DE_strings, PL_strings):
     strings_no_PL = pd.DataFrame(columns=["datenart", "sprache", "produktno", "navisionid", "text"])
     for index, row in DE_strings.iterrows():
-        # print(f"full_row = {row}")
-        # print(f"row0 = {row['datenart']}")
-        # print(f"Is row0 in PL_strings? {row['datenart'] in PL_strings['datenart'].values and row['produktno'] in PL_strings['produktno'].values and row['navisionid'] in PL_strings['navisionid'].values}")
-        # print(f"row2 = {row['produktno']}")
-        # print(f"row3 = {row['navisionid']}")
         if row["datenart"] in PL_strings["datenart"].values and \
            row["produktno"] in PL_strings["produktno"].values and \
            row["navisionid"] in PL_strings["navisionid"].values:
-            # print(type(row))
             DE_string = pd.DataFrame(row).transpose()
-            # print(DE_string.shape)
-            # print(DE_string)
-            # DE_string.columns = ["datenart", "sprache", "produktno", "navisionid", "text"]
-            # print(type(DE_string))
-            # print(DE_string)
             strings_no_PL = pd.concat([strings_no_PL, DE_string], ignore_index=True, axis = 0)
-            # print(strings_no_PL)
     return strings_no_PL
 
 def select_strings4trans(strings_no_PL):
     strings4trans = pd.DataFrame(columns=['DE', 'PL'])
     strings4trans["DE"] = strings_no_PL["text"]
-    # print(strings4trans.head())
     strings4trans["PL"] = ""
     strings4trans_unique = strings4trans.drop_duplicates(keep="first")
     return strings4trans_unique
@@ -122,7 +111,7 @@ def find_untrans(files4trans_path, columns):
         
         for tab in wb.sheetnames: #for each worksheet in a workbook
             ws = wb[tab]
-            row_limit = ws.max_row
+            row_limit = ws.max_row+1
             print(f"Number of rows: {row_limit} \nCurrent sheet: {ws} \nCurrent tab: {tab}")
             
             # verify the names/number of columns in the spreadsheet
@@ -134,13 +123,7 @@ def find_untrans(files4trans_path, columns):
     
             for transcolumn in columns:
                 DE_strings, PL_strings = extract_strings(ws, transcolumn, row_limit)
-                # print(DE_strings.head())
-                # print(DE_strings.shape)
-                # print(PL_strings.head())
-                # print(PL_strings.shape)
                 strings_no_PL = select_untranslated(DE_strings, PL_strings)
-                # print(strings_no_PL.head())
-                # print(strings_no_PL.shape)
                 strings4trans = select_strings4trans(strings_no_PL)
                 print(f"Tab: {tab}, Column: {XLS_COLUMNS[transcolumn]}, unique dataframe head: {strings4trans.head()}")
                 print(f"Unique dataframe shape: {strings4trans.shape}")

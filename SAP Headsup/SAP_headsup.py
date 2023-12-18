@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import streamlit as st
 import pyodbc
 
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\SAP\\headsupy\\"
+CURR_PATH = "e:\\Moje dokumenty\\SG_scripts_data\\SAP\\headsupy\\"
 JOBPARTS_XLS = "SAPowe_Headsupy.xlsx"
 JOBPARTS_EXPORT = CURR_PATH + JOBPARTS_XLS
 
@@ -124,7 +124,7 @@ def repair_nulls(df):
     return df
 
 def add_prevdays(df):
-    df["ReturnDate"] = (pd.to_datetime(df["ReturnDate"]).dt.date).astype('datetime64')
+    df["ReturnDate"] = (pd.to_datetime(df["ReturnDate"]).dt.date).astype('datetime64[ns]')
     df["ReturnDate-1"] = df["ReturnDate"] - timedelta(days = 1)
     df["ReturnDate-2"] = df["ReturnDate"] - timedelta(days = 2)
     df["ReturnDate-3"] = df["ReturnDate"] - timedelta(days = 3)

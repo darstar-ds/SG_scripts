@@ -6,32 +6,20 @@ XLS_COLUMNS = {
     6: "Kurzbeschreibung",
     7: "Optionstext",
     9: "Lieferumfang",
-    10: "Langbeschreibung",
-    11: "Ergaenzung-Bullets",
-    12: "Weitere-Anmerkungen",
-    13: "Achtung",
-    14: "Variante",
-    15: "Hinweis",
-    16: "Typ",
-    17: "Abmessungen",
-    18: "Leistung-Leuchtmittel"
+    10: "Einleitung",
+    11: "Langbeschreibung",
+    12: "Ergaenzung-Bullets",
+    13: "Weitere-Anmerkungen",
+    14: "Weitere-Besonderheiten",
+    15: "Achtung",
+    # 16: "Variante",
+    16: "Hinweis",
+    17: "Typ",
+    18: "Abmessungen",
+    # 20: "Leistung-Leuchtmittel"
     }
-# XLS_COLUMNS = {
-#     6: "Kurzbeschreibung",
-#     7: "Optionstext",
-#     8: "",
-#     9: "Lieferumfang",
-#     10: "Langbeschreibung",
-#     11: "Ergaenzung-Bullets",
-#     12: "Weitere-Anmerkungen",
-#     13: "Achtung",
-#     14: "Variante",
-#     15: "Hinweis",
-#     16: "Typ",
-#     17: "Abmessungen",
-#     18: "Leistung-Leuchtmittel"
-#     }
-CURR_PATH = "d:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-07-26\\"
+
+CURR_PATH = "e:\\Moje dokumenty\\SG_scripts_data\\Reuter\\2023-12-01\\"
 TRANSLATED_FILES_PATH = CURR_PATH + "translated\\"
 FILES4TRANS_PATH = CURR_PATH + "exports4trans\\"
 
@@ -43,10 +31,10 @@ def translated_gloss(translated_files_path):
     each file is added to the dataframe.
     '''
     
-
+    dir_list = os.listdir(translated_files_path)
     translated_gloss = pd.DataFrame(columns=["DE", "PL"])
 
-    # get all translated files and build trans memmory as dataframe
+    # get all translated files and build trans memory as dataframe
     for file in dir_list:
         trans_file_path = translated_files_path + file
         one_trans_file = pd.ExcelFile(trans_file_path)
@@ -84,16 +72,6 @@ def translate_workbooks(workbooks_path, columns):
                     deu_cell_2 = ws.cell(row=curr_row+1, column=column)
                     pol_cell_1 = ws.cell(row=curr_row+2, column=column)
                     pol_cell_2 = ws.cell(row=curr_row+3, column=column)
-                    
-                    # if deu_cell_1.value is None:
-                    #     pol_cell_1.value = None
-                    # else:
-                    #     pol_cell_1.value = transmem_dict[deu_cell_1.value]
-                    
-                    # if deu_cell_2.value is None:
-                    #     pol_cell_2.value = None
-                    # else:
-                    #     pol_cell_2.value = transmem_dict[deu_cell_2.value]
                     
                     if deu_cell_1.value is not None and pol_cell_1.value is None:
                         pol_cell_1.value = transmem_dict[deu_cell_1.value]
